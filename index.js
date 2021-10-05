@@ -4,7 +4,17 @@ const {Client, Intents} = require('discord.js');
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS]});
+const client = new Client({
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS
+    ],
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+});
 
 client.on('ready', () => {
     console.log(client.user.tag)
@@ -17,7 +27,7 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'about') {
         console.log(interaction)
-        await interaction.reply("Brigadir v0.0.1, ssylka github");
+        await interaction.reply("Brigadir v0.0.1, https://github.com/sabadoryo/Brigadir");
     }
 });
 
@@ -96,7 +106,7 @@ client.on('messageCreate', async msg => {
         }
 
         if (command === 'introduce') {
-            await msg.channel.send({content: 'Бригадир завода',files: ['./static/img/brigadir.jpg']})
+            await msg.channel.send({content: 'Бригадир завода', files: ['./static/img/brigadir.jpg']})
         }
     }
     if (msg.content === '+') {
@@ -186,6 +196,30 @@ client.on('messageCreate', async msg => {
     }
 })
 
+client.on('guildMemberAdd', async (member) => {
+    console.log('MEMBER ADDED')
+    const channel = member.guild.channels.cache.find(channel => channel.name === "welcome");
+    await channel.send({
+        content: "**Добро пожаловать на завод!**\nДобавь реакцию серпа, чтобы залутать фри звание",
+        files: [
+            './static/img/zavod.jpg'
+        ]
+    }).then(message => {
+        message.react("⛏️")
+    });
+})
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (!user.bot) {
+        if (reaction.emoji.name === '⛏️') {
+            const role = reaction.message.guild.roles.cache.find(r => r.name === 'Чел');
+            const guild = reaction.message.guild;
+            const memberWhoReacted = guild.members.cache.find(member => member.id === user.id);
+
+            memberWhoReacted.roles.add(role);
+        }
+    }
+})
 
 client.login(process.env.TOKEN);
 
