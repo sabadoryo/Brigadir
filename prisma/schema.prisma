@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  name    String   @default("")
+  discord_id String @unique @default("")
+  calls CallsUsers[]
+
+  @@map("users")
+}
+
+model Call {
+  id     Int       @id @default(autoincrement())
+  is_active Boolean @default(true)
+  name String @default("")
+  user_amount_limit Int @default(0)
+  cur_user_amount Int @default(0)
+  users CallsUsers[]
+
+  @@map("calls")
+}
+
+model CallsUsers {
+   call Call @relation(fields: [callId], references: [id])
+   callId Int
+   user User @relation(fields: [userId], references: [id])
+   userId Int
+   assignedAt DateTime @default(now())
+
+   @@id([callId, userId])
+   @@map("call_user")
+}
+
+

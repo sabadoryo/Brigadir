@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `user` MODIFY `email` VARCHAR(191) NOT NULL DEFAULT '',
+    MODIFY `name` VARCHAR(191) NOT NULL DEFAULT '',
+    MODIFY `discord_id` VARCHAR(191) NOT NULL DEFAULT '';
