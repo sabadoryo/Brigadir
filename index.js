@@ -38,7 +38,7 @@ client.on('messageCreate', async msg => {
 
         if (command === 'rc') {
             if (params.length !== 3) {
-                await msg.reply('Неверный синтаксис дэцик. Вот так !!rc {дело} {количество работяг} ,пример: !!rc Дота 10')
+                await msg.reply('Неверный синтаксис. Вот так !!rc {дело} {количество работяг} ,пример: !!rc Дота 10')
                 return;
             }
 
@@ -104,6 +104,42 @@ client.on('messageCreate', async msg => {
                 "\n\n\n\n\n" +
                 "https://github.com/sabadoryo/Brigadir"
             )
+        }
+
+        if (command === 'shuffle') {
+            const params = msg.content.replace('!!shuffle', '').trim().split('>');
+
+            if (params.length != 2) {
+                await msg.reply('Неверный синтаксис. \nВот так !!shuffle **войс в котором сидят все**>**Войс в который пнуть половину игроков**\nпример: !!shuffle main voice>second voice')
+                return;
+            }
+
+            const mainChannel = msg.guild.channels.cache.find(c => c.name === params[0] && c.type === 'GUILD_VOICE');
+            const secondaryChannel = msg.guild.channels.cache.find(c => c.name === params[1] && c.type === 'GUILD_VOICE');
+
+            if (mainChannel == null || secondaryChannel == null) {
+                await msg.reply(':no_entry_sign: Не найдены данные каналы:no_entry_sign: ')
+                return;
+            }
+
+            const members = mainChannel.members.sort(() => Math.random() - 0.5)
+            const length = mainChannel.members.size;
+
+            let counter = 0;
+
+            for (const [memberID, member] of members) {
+                member.voice.setChannel(secondaryChannel.id)
+                    .then(() => console.log(`Moved ${member.user.tag}.`))
+                    .catch(console.error);
+
+                counter++;
+
+                if (Math.round(length / 2) == counter) {
+                    break;
+                }
+            }
+
+            await msg.reply(":white_check_mark: **Распределение окончено!**:white_check_mark: ")
         }
 
         if (command === 'introduce') {
