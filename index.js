@@ -38,6 +38,8 @@ client.on('messageCreate', async msg => {
         addDiscordScore(res, 1)
     })
 
+    console.log(user);
+
 
     if (msg.content.startsWith('!!')) {
         let params = msg.content.replace('!!', '').split(' ');
