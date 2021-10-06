@@ -139,7 +139,10 @@ client.on('messageCreate', async msg => {
                 }
             }
 
-            await msg.reply(":white_check_mark: **Распределение окончено!**:white_check_mark: ")
+            await msg.reply(
+                ":white_check_mark: **Распределение окончено!**:white_check_mark:" +
+                "**не забудьте включить микрофоны после распределния**"
+            )
         }
 
         if (command === 'introduce') {
