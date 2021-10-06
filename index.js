@@ -328,5 +328,5 @@ function addDiscordScore(user, point) {
         data: {
             discord_score: user.discord_score + point
         }
-    })
+    }).then(res => {})
 }
