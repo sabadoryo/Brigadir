@@ -36,9 +36,7 @@ client.on('messageCreate', async msg => {
 
     const user = await createUserIfDoesNotExist(msg.member.user).then(res => {
         addDiscordScore(res, 1)
-    })
-
-    console.log(user);
+    });
 
 
     if (msg.content.startsWith('!!')) {
@@ -305,14 +303,14 @@ function isNumeric(n) {
 }
 
 function createUserIfDoesNotExist(user) {
+    console.log(user)
     return prisma.user.upsert({
         where: {
             discord_id: user.id
         },
         create: {
             discord_id: user.id,
-            name: user.username,
-            discord_score: 0
+            name: user.username
         },
         update: {
             discord_id: user.id
@@ -328,5 +326,6 @@ function addDiscordScore(user, point) {
         data: {
             discord_score: user.discord_score + point
         }
-    }).then(res => {})
+    }).then(res => {
+    })
 }
