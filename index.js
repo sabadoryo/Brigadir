@@ -109,6 +109,7 @@ client.on('messageCreate', async msg => {
                 "2. Cancel rabotyagi call - **!!cancel rc**\n" +
                 "3. Кто же этот бригадир - **!!introduce**\n" +
                 "4. Распределить игроков в одной из комнат в другую в равном количестве - !!shuffle channel 1>channel 2\n" +
+                "5. Топ челы - !!top\n" +
                 "\n\n\n\n\n" +
                 "https://github.com/sabadoryo/Brigadir"
             )
