@@ -32,6 +32,13 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async msg => {
+    if (msg.author.bot) return;
+
+    const user = await createUserIfDoesNotExist(msg.member.user).then(res => {
+        addDiscordScore(res, 1)
+    })
+
+
     if (msg.content.startsWith('!!')) {
         let params = msg.content.replace('!!', '').split(' ');
         let command = params[0]
@@ -100,7 +107,8 @@ client.on('messageCreate', async msg => {
                 "Список доступных комманд:\n" +
                 "1. Rabotyagi call - **!!rc <названиеДела> <нужное количество работяг>**\n" +
                 "2. Cancel rabotyagi call - **!!cancel rc**\n" +
-                "3. Кто же этот бригадир ө **!!introduce**" +
+                "3. Кто же этот бригадир - **!!introduce**\n" +
+                "4. Распределить игроков в одной из комнат в другую в равном количестве - !!shuffle channel 1>channel 2\n" +
                 "\n\n\n\n\n" +
                 "https://github.com/sabadoryo/Brigadir"
             )
@@ -158,8 +166,6 @@ client.on('messageCreate', async msg => {
         })
 
         if (call) {
-            const user = await createUserIfDoesNotExist(msg.member.user)
-
             const userAlreadyConnectedToCall = await prisma.callsUsers.findFirst({
                 where: {
                     userId: user.id,
@@ -249,12 +255,17 @@ client.on('guildMemberAdd', async (member) => {
     });
 })
 
-client.on('messageReactionAdd', async (reaction, user) => {
-    if (!user.bot) {
+client.on('messageReactionAdd', async (reaction, usr) => {
+    if (!usr.bot) {
+
+        const user = await createUserIfDoesNotExist(usr).then(res => {
+            addDiscordScore(res, 2)
+        })
+
         if (reaction.emoji.name === '⛏️') {
             const role = reaction.message.guild.roles.cache.find(r => r.name === 'Чел');
             const guild = reaction.message.guild;
-            const memberWhoReacted = guild.members.cache.find(member => member.id === user.id);
+            const memberWhoReacted = guild.members.cache.find(member => member.id === usr.id);
 
             memberWhoReacted.roles.add(role);
         }
@@ -269,9 +280,6 @@ function isNumeric(n) {
 }
 
 function createUserIfDoesNotExist(user) {
-
-    console.log(user)
-
     return prisma.user.upsert({
         where: {
             discord_id: user.id
@@ -284,4 +292,17 @@ function createUserIfDoesNotExist(user) {
             discord_id: user.id
         }
     });
+}
+
+function addDiscordScore(user, point) {
+    prisma.user.update({
+        where: {
+            discord_id: user.discord_id
+        },
+        data: {
+            discord_score: user.discord_score + point
+        }
+    }).then(res => {
+
+    })
 }
