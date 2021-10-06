@@ -99,7 +99,8 @@ client.on('messageCreate', async msg => {
             await msg.reply(
                 "Список доступных комманд:\n" +
                 "1. Rabotyagi call - **!!rc <названиеДела> <нужное количество работяг>**\n" +
-                "1. Cancel rabotyagi call - **!!cancel rc**\n" +
+                "2. Cancel rabotyagi call - **!!cancel rc**\n" +
+                "3. Кто же этот бригадир ө **!!introduce**"
                 "\n\n\n\n\n" +
                 ""
             )
