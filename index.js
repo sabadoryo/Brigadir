@@ -320,7 +320,6 @@ function createUserIfDoesNotExist(user) {
 }
 
 function addDiscordScore(user, point) {
-    console.log(user)
     prisma.user.update({
         where: {
             discord_id: user.discord_id
