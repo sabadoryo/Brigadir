@@ -131,6 +131,8 @@ client.on('messageCreate', async msg => {
                 const members = mainChannel.members.sort(() => Math.random() - 0.5)
                 const length = mainChannel.members.size;
 
+                console.log(members.size);
+
                 let counter = 0;
 
                 for (const [memberID, member] of members) {
