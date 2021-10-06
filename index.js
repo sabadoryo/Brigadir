@@ -156,6 +156,30 @@ client.on('messageCreate', async msg => {
         if (command === 'introduce') {
             await msg.channel.send({content: 'Бригадир завода', files: ['./static/img/brigadir.jpg']})
         }
+
+        if (command === 'top') {
+            let text = "";
+
+            const users = await prisma.user.findMany({
+                where: {
+                    discord_score: {
+                        gt: 0
+                    }
+                },
+                orderBy: {
+                    discord_score: 'desc'
+                }
+            })
+
+            let counter = 1;
+
+            users.forEach((entry) => {
+                text += `${counter}.**${entry.name}** - ${entry.discord_score} pts.\n`
+                counter++;
+            })
+
+            await msg.channel.send("**топ челов сервера**:\n" + text)
+        }
     }
     if (msg.content === '+') {
 
