@@ -180,6 +180,28 @@ client.on('messageCreate', async msg => {
 
                 await msg.channel.send("**топ челов сервера**:\n" + text)
             }
+
+            if (command === 'opros') {
+                const choices = params.slice(1, params.length);
+                const reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
+
+                let text = "";
+                let counter = 1;
+
+                for (choice of choices) {
+                    text += `${counter} - **${choice}**, `;
+                    counter++;
+                }
+
+                msg.channel.send(`Опрос:\n ${text}`)
+                    .then(message => {
+                        let counter = 0;
+                        for (choice of choices) {
+                            message.react(`${reactions[counter]}`);
+                            counter++;
+                        }
+                    })
+            }
         }
         if (msg.content === '+') {
 
@@ -326,5 +348,6 @@ function addDiscordScore(user, point) {
         data: {
             discord_score: user.discord_score + point
         }
-    }).then(res => {})
+    }).then(res => {
+    })
 }
