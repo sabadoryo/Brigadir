@@ -108,7 +108,8 @@ client.on('messageCreate', async msg => {
                     "2. Cancel rabotyagi call - **!!cancel rc**\n" +
                     "3. Кто же этот бригадир - **!!introduce**\n" +
                     "4. Распределить игроков в одной из комнат в другую в равном количестве - **!!shuffle channel 1>channel 2**\n" +
-                    "5. Топ челы - **!!top**\n"
+                    "5. Топ челы - **!!top**\n" +
+                    "6. Сделать опрос, максимальное количество вариантов 9 - **!!opros variant1 variant2 variant3"
                 )
             }
 
@@ -183,6 +184,12 @@ client.on('messageCreate', async msg => {
 
             if (command === 'opros') {
                 const choices = params.slice(1, params.length);
+
+                if (choices.length > 9) {
+                    msg.reply("Максимальное количество вариантов 9");
+                    return;
+                }
+
                 const reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
 
                 let text = "";
