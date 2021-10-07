@@ -109,7 +109,7 @@ client.on('messageCreate', async msg => {
                     "3. Кто же этот бригадир - **!!introduce**\n" +
                     "4. Распределить игроков в одной из комнат в другую в равном количестве - **!!shuffle channel 1>channel 2**\n" +
                     "5. Топ челы - **!!top**\n" +
-                    "6. Сделать опрос, максимальное количество вариантов 9 - **!!opros variant1 variant2 variant3"
+                    "6. Сделать опрос, максимальное количество вариантов 9 - **!!opros variant1 variant2 variant3**"
                 )
             }
 
