@@ -199,7 +199,7 @@ client.on('messageCreate', async msg => {
                 if (params[1] == 'steam') {
                     await msg.reply('Загружаю данные...')
                         .then(m => {
-                            setTimeout(() => m.delete(), 3000)
+                            setTimeout(() => m.delete(), 1000)
                         })
 
                     mainText = "Топ по рейтингу дота(по кс пока невозможно).\nЕсли вас нету в списке зарегистрируйте ваш steam_id коммандой !!reg steam <steam_id>"
