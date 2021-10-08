@@ -112,7 +112,8 @@ client.on('messageCreate', async msg => {
                     "4. Распределить игроков в одной из комнат в другую в равном количестве - **!!shuffle channel 1>channel 2**\n" +
                     "5. Топ челы - **!!top**\n" +
                     "6. Сделать опрос, максимальное количество вариантов 9 - **!!opros variant1 variant2 variant3**\n" +
-                    "7. Привязать аккаунт к боту, например стим - **!!reg steam 12312312**"
+                    "7. Привязать аккаунт к боту, например стим - **!!reg steam 12312312**\n" +
+                    "8. Случайное число от 1 до 100 - **!!roll**\n"
                 )
             }
 
@@ -274,6 +275,11 @@ client.on('messageCreate', async msg => {
                         await msg.reply(`Стим айди ${params[2]} зареган под ${user.name}`)
                     }
                 }
+            }
+
+            if (command === 'roll') {
+                let randomNumber = await Math.floor(Math.random() * 100)
+                await msg.reply(`${randomNumber}`)
             }
         }
         if (msg.content === '+') {
