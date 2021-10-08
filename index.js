@@ -223,6 +223,11 @@ client.on('messageCreate', async msg => {
                             })
                     }
                     let counter = 1;
+
+                    await users.sort(function(a,b){
+                        return b.mmr - a.mmr;
+                    });
+
                     await users.forEach((entry) => {
                         text += `${counter}.**${entry.name}** - ${entry.mmr} mmr.\n`
                         counter++;
