@@ -286,6 +286,10 @@ client.on('messageCreate', async msg => {
                 let randomNumber = await Math.floor(Math.random() * 100)
                 await msg.reply(`${randomNumber}`)
             }
+
+            if (command === 'donate') {
+                await msg.reply(`Каспи: +7 747 9819279\nна буст сервера конечно же`)
+            }
         }
         if (msg.content === '+') {
 
