@@ -1,4 +1,5 @@
 require('dotenv').config()
+const axios = require('axios').default;
 
 const {Client, Intents} = require('discord.js');
 const {PrismaClient} = require('@prisma/client')
@@ -11,7 +12,8 @@ const client = new Client({
         Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
         Intents.FLAGS.GUILD_MEMBERS,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS
+        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_VOICE_STATES
     ],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
@@ -114,30 +116,31 @@ client.on('messageCreate', async msg => {
             }
 
             if (command === 'shuffle') {
-                const params = msg.content.replace('!!shuffle', '').trim().split('>');
+                let params = msg.content.replace('!!shuffle', '').trim().split('>');
 
                 if (params.length != 2) {
                     await msg.reply('Неверный синтаксис. \nВот так !!shuffle **войс в котором сидят все**>**Войс в который пнуть половину игроков**\nпример: !!shuffle main voice>second voice')
                     return;
                 }
 
-                const mainChannel = msg.guild.channels.cache.find(c => c.name === params[0] && c.type === 'GUILD_VOICE');
-                const secondaryChannel = msg.guild.channels.cache.find(c => c.name === params[1] && c.type === 'GUILD_VOICE');
+                let mainChannel = await msg.guild.channels.cache.find(c => c.name === params[0]);
+                let secondaryChannel = await msg.guild.channels.cache.find(c => c.name === params[1]);
 
                 if (mainChannel == null || secondaryChannel == null) {
                     await msg.reply(':no_entry_sign: Не найдены данные каналы:no_entry_sign: ')
                     return;
                 }
 
-                const members = mainChannel.members.sort(() => Math.random() - 0.5)
-                const length = mainChannel.members.size;
+                let members = mainChannel.members.sort(() => Math.random() - 0.5)
+                let length = mainChannel.members.size;
 
                 console.log(members.size);
+                console.log(members);
 
                 let counter = 0;
 
-                for (const [memberID, member] of members) {
-                    member.voice.setChannel(secondaryChannel.id)
+                for (let [memberID, member] of members) {
+                    await member.voice.setChannel(secondaryChannel.id)
                         .then(() => console.log(`Moved ${member.user.tag}.`))
                         .catch(console.error);
 
@@ -159,27 +162,73 @@ client.on('messageCreate', async msg => {
             }
 
             if (command === 'top') {
+                const topCategories = ['discord', 'steam'];
+                let mainText = "";
+
+                if (typeof params[1] == "undefined") {
+                    msg.reply('Впишите по какому топу выдавать результаты. Доступные топы: discord,steam')
+                    return;
+                }
+
+                if (!topCategories.includes(params[1])) {
+                    msg.reply('Такого топа нету')
+                    return;
+                }
+
                 let text = "";
 
-                const users = await prisma.user.findMany({
-                    where: {
-                        discord_score: {
-                            gt: 0
+                if (params[1] == 'discord') {
+                    mainText = "**топ челов сервера по активности**"
+                    const users = await prisma.user.findMany({
+                        where: {
+                            discord_score: {
+                                gt: 0
+                            }
+                        },
+                        orderBy: {
+                            discord_score: 'desc'
                         }
-                    },
-                    orderBy: {
-                        discord_score: 'desc'
+                    })
+
+                    let counter = 1;
+                    await users.forEach((entry) => {
+                        text += `${counter}.**${entry.name}** - ${entry.discord_score} pts.\n`
+                        counter++;
+                    })
+                }
+                if (params[1] == 'steam') {
+                    await msg.reply('Загружаю данные...')
+                        .then(m => {
+                            setTimeout(() => m.delete(), 3000)
+                        })
+
+                    mainText = "Топ по рейтингу дота(по кс пока невозможно).\nЕсли вас нету в списке зарегистрируйте ваш steam_id коммандой !!reg steam <steam_id>"
+                    const users = await prisma.user.findMany({
+                        where: {
+                            NOT: {
+                                steam_id: ""
+                            }
+                        }
+                    })
+
+                    for (user of users) {
+                        await axios.get(`https://api.opendota.com/api/players/${user.steam_id}`)
+                            .then(function (response) {
+                                user.mmr = response.data.solo_competitive_rank ?? (response.data.mmr_estimate.estimate ?? 0);
+                            })
+                            .catch(function (error) {
+                                user.mmr = 0;
+                            })
                     }
-                })
+                    let counter = 1;
+                    await users.forEach((entry) => {
+                        text += `${counter}.**${entry.name}** - ${entry.mmr} mmr.\n`
+                        counter++;
+                    })
 
-                let counter = 1;
+                }
 
-                users.forEach((entry) => {
-                    text += `${counter}.**${entry.name}** - ${entry.discord_score} pts.\n`
-                    counter++;
-                })
-
-                await msg.channel.send("**топ челов сервера**:\n" + text)
+                await msg.channel.send(`**${mainText}**:\n\n` + text)
             }
 
             if (command === 'opros') {
@@ -208,6 +257,22 @@ client.on('messageCreate', async msg => {
                             counter++;
                         }
                     })
+            }
+
+            if (command === 'reg') {
+                if (params[1] === 'steam') {
+                    if (typeof params[2] != "undefined") {
+                        await prisma.user.update({
+                            where: {
+                                id: user.id
+                            },
+                            data: {
+                                steam_id: params[2]
+                            }
+                        })
+                        await msg.reply(`Стим айди ${params[2]} зареган под ${user.name}`)
+                    }
+                }
             }
         }
         if (msg.content === '+') {
