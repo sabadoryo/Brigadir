@@ -17,6 +17,7 @@ model User {
   discord_id String @unique @default("")
   steam_id String @default("")
   calls CallsUsers[]
+  halyavas Halyava[]
 
   @@map("users")
 }
@@ -30,6 +31,13 @@ model Call {
   users CallsUsers[]
 
   @@map("calls")
+}
+
+model Halyava {
+  id Int @id @default(autoincrement())
+  looter User @relation(fields: [looterId], references: [id])
+  looterId Int
+  createdAt DateTime @default(now())
 }
 
 model CallsUsers {

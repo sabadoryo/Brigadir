@@ -17,8 +17,9 @@ const client = new Client({
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
+//@TODO top chel rol' for top 1
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log(client.user.tag)
 });
 
@@ -28,7 +29,6 @@ client.on('interactionCreate', async interaction => {
     const {commandName} = interaction;
 
     if (commandName === 'about') {
-        console.log(interaction)
         await interaction.reply("Brigadir v0.0.1, https://github.com/sabadoryo/Brigadir");
     }
 });
@@ -135,10 +135,6 @@ client.on('messageCreate', async msg => {
 
                 let members = mainChannel.members.sort(() => Math.random() - 0.5)
                 let length = mainChannel.members.size;
-
-                console.log(members.size);
-                console.log(members);
-
                 let counter = 0;
 
                 for (let [memberID, member] of members) {
@@ -289,6 +285,45 @@ client.on('messageCreate', async msg => {
 
             if (command === 'donate') {
                 await msg.reply(`Каспи: +7 747 9819279\nна буст сервера конечно же`)
+            }
+
+            if (command === 'halyava') {
+                var threeHoursBefore = new Date();
+                threeHoursBefore.setHours(threeHoursBefore.getHours() - 3);
+
+                const lastHalyava = await prisma.halyava.findFirst({
+                    where: {
+                        createdAt: {
+                            gte: threeHoursBefore
+                        }
+                    }
+                })
+
+                if (lastHalyava) {
+                    let lastHalyavaDate = new Date(lastHalyava.createdAt)
+                    let nextHalyavaDate = new Date(lastHalyavaDate.setHours(lastHalyavaDate.getHours() + 3))
+                    let nextHalyavaSecondsLeft = (nextHalyavaDate.getTime() - (new Date).getTime()) / 1000
+
+                    msg.reply(`Следующая халява будет доступна через ${nextHalyavaSecondsLeft} секунд`)
+                    return;
+                } else {
+                    await prisma.user.update({
+                        where: {
+                            id: user.id
+                        },
+                        data: {
+                            discord_score: user.discord_score + 50
+                        }
+                    })
+
+                    await prisma.halyava.create({
+                        data: {
+                            looterId: user.id,
+                            createdAt: new Date()
+                        }
+                    });
+                    msg.channel.send(`**${user.name} сорвал халяву!** 🙀`)
+                }
             }
         }
         if (msg.content === '+') {
