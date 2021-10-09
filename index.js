@@ -199,10 +199,8 @@ client.on('messageCreate', async msg => {
                     })
                 }
                 if (params[1] == 'steam') {
-                    await msg.reply('Загружаю данные...')
-                        .then(m => {
-                            setTimeout(() => m.delete(), 1000)
-                        })
+
+                    let kek = await msg.reply('Загружаю данные...');
 
                     mainText = "Топ по рейтингу дота(по кс пока невозможно).\nЕсли вас нету в списке зарегистрируйте ваш steam_id коммандой !!reg steam <steam_id>"
                     const users = await prisma.user.findMany({
@@ -227,6 +225,8 @@ client.on('messageCreate', async msg => {
                     await users.sort(function (a, b) {
                         return b.mmr - a.mmr;
                     });
+
+                    await kek.delete();
 
                     await users.forEach((entry) => {
                         text += `${counter}.**${entry.name}** - ${entry.mmr} mmr.\n`
