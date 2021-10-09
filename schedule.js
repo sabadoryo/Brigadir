@@ -6,16 +6,19 @@ rule.minutes = 30;
 
 schedule.scheduleJob(rule, async function () {
     let image = "";
-    await axios.get(`https://nekobot.xyz/api/image?type=neko`)
+    let caption = "";
+
+    await axios.get(`https://some-random-api.ml/meme`)
         .then(function (response) {
             console.log(response);
             console.log('sent message to my love')
-            image = response.data.message;
+            image = response.data.image;
+            caption = response.data.caption
         })
         .catch(function (error) {
             console.log(error)
         })
 
-    const user = await client.users.fetch('401046879015534592');
-    user.send({files: [`${image}`], content: "Прости плз:c"});
+    const channel = await client.channels.fetch('894551552281444363');
+    channel.send({files: [`${image}`], content: caption});
 });
