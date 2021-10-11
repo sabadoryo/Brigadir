@@ -144,7 +144,7 @@ client.on('messageCreate', async msg => {
 
                     counter++;
 
-                    if (Math.round(length / 2) == counter) {
+                    if (Math.round(length / 2) === counter) {
                         break;
                     }
                 }
@@ -175,7 +175,7 @@ client.on('messageCreate', async msg => {
 
                 let text = "";
 
-                if (params[1] == 'discord') {
+                if (params[1] === 'discord') {
                     mainText = "**топ челов сервера по активности**"
                     const users = await prisma.user.findMany({
                         where: {
@@ -188,13 +188,61 @@ client.on('messageCreate', async msg => {
                         }
                     })
 
-                    let counter = 1;
-                    await users.forEach((entry) => {
-                        text += `${counter}.**${entry.name}** - ${entry.discord_score} pts.\n`
-                        counter++;
-                    })
+                    await msg.guild.roles.fetch('897035307940204574')
+                        .then(res => {
+                            res.members.forEach((member, i) => {
+                                member.roles.remove(res);
+                            })
+                            msg.guild.members.fetch(users[0].discord_id)
+                                .then(async member => {
+                                    await member.roles.add(res)
+                                })
+
+                            return res;
+                        });
+                    await msg.guild.roles.fetch('897035794680782849')
+                        .then(res => {
+                            res.members.forEach((member, i) => {
+                                member.roles.remove(res);
+                            })
+
+                            msg.guild.members.fetch(users[1].discord_id)
+                                .then(async member => {
+                                    await member.roles.add(res)
+                                })
+
+                            return res;
+                        });
+                    await msg.guild.roles.fetch('897039738823913502')
+                        .then(res => {
+                            res.members.forEach((member, i) => {
+                                member.roles.remove(res);
+                            })
+
+                            msg.guild.members.fetch(users[2].discord_id)
+                                .then(async member => {
+                                    await member.roles.add(res)
+                                })
+                            return res;
+                        });
+
+                    for (let i = 0; i < users.length; i++) {
+                        let roleName = "";
+
+                        if (i === 0) {
+                            roleName = "гоняет на тесле😎";
+                        }
+                        if (i === 1) {
+                            roleName = "👅global elite👅"
+                        }
+                        if (i === 2) {
+                            roleName = "⚡ADMIRAL⚡"
+                        }
+
+                        text += `${i + 1}. **${(users[i].name).padEnd(15, ' ')}** ${users[i].discord_score.toString().padEnd(14, ' ')} ${roleName}\n`
+                    }
                 }
-                if (params[1] == 'steam') {
+                if (params[1] === 'steam') {
 
                     let kek = await msg.reply('Загружаю данные...');
 
