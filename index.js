@@ -185,7 +185,8 @@ client.on('messageCreate', async msg => {
                         },
                         orderBy: {
                             discord_score: 'desc'
-                        }
+                        },
+                        take :10
                     })
 
                     await msg.guild.roles.fetch('897035307940204574')
