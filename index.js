@@ -4,6 +4,7 @@ const axios = require('axios').default;
 const {Client, Intents} = require('discord.js');
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
+const {MessageEmbed} = require('discord.js');
 const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -175,6 +176,16 @@ client.on('messageCreate', async msg => {
 
                 let text = "";
 
+                const exampleEmbed = new MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle(mainText)
+                    .setDescription('поощрение работяг за их активность на заводе')
+                    .setTimestamp()
+                    .addField(`Работяга`, ' | ', true)
+                    .addField('Награда', ' | ', true)
+                    .addField('Поинты', ' | ', true)
+                    .setFooter('если вы уверены в смене топа, но ваша позиция не обновилась, перезапустите команду еще раз!');
+
                 if (params[1] === 'discord') {
                     mainText = "**топ челов сервера по активности**"
                     const users = await prisma.user.findMany({
@@ -186,7 +197,7 @@ client.on('messageCreate', async msg => {
                         orderBy: {
                             discord_score: 'desc'
                         },
-                        take :10
+                        take: 10
                     })
 
                     await msg.guild.roles.fetch('897035307940204574')
@@ -240,8 +251,19 @@ client.on('messageCreate', async msg => {
                             roleName = "⚡ADMIRAL⚡"
                         }
 
-                        text += `${i + 1}. **${(users[i].name).padEnd(15, ' ')}** ${users[i].discord_score.toString().padEnd(14, ' ')} ${roleName}\n`
+                        if (i === 7) {
+                            break;
+                        }
+
+                        exampleEmbed.addField(`${i + 1}.` + users[i].name, ' | ', true);
+                        if (roleName)
+                            exampleEmbed.addField(roleName, ' | ', true);
+                        else
+                            exampleEmbed.addField('________', ' | ', true);
+                        exampleEmbed.addField(`${users[i].discord_score}`, ' | ', true);
                     }
+                    await msg.channel.send({embeds: [exampleEmbed]})
+                    return;
                 }
                 if (params[1] === 'steam') {
 
@@ -278,9 +300,8 @@ client.on('messageCreate', async msg => {
                         counter++;
                     })
 
+                    msg.channel.send(text)
                 }
-
-                await msg.channel.send(`**${mainText}**:\n\n` + text)
             }
 
             if (command === 'opros') {
