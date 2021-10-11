@@ -528,7 +528,8 @@ function createUserIfDoesNotExist(user) {
             discord_score: 0
         },
         update: {
-            discord_id: user.id
+            discord_id: user.id,
+            name: user.username
         }
     });
 }
