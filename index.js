@@ -45,6 +45,11 @@ client.on('messageCreate', async msg => {
             let params = msg.content.replace('!!', '').split(' ');
             let command = params[0]
 
+            if (command === 'bunt') {
+
+                waitAndDo(15,msg)
+            }
+
             if (command === 'rc') {
                 if (params.length !== 3) {
                     await msg.reply('Неверный синтаксис. Вот так !!rc {дело} {количество работяг} ,пример: !!rc Дота 10')
@@ -115,7 +120,7 @@ client.on('messageCreate', async msg => {
                     "6. Сделать опрос, максимальное количество вариантов 9 - **!!opros variant1 variant2 variant3**\n" +
                     "7. Привязать аккаунт к боту, например стим - **!!reg steam 12312312**\n" +
                     "8. Случайное число от 1 до 100 - **!!roll**\n" +
-                    "9. Халява, быстрее забери ее!!!! - **!!halyava**\n"+
+                    "9. Халява, быстрее забери ее!!!! - **!!halyava**\n" +
                     "10. ы **!!donate**\n"
                 )
             }
@@ -202,66 +207,53 @@ client.on('messageCreate', async msg => {
                         take: 10
                     })
 
-                    await msg.guild.roles.fetch('897035307940204574')
-                        .then(res => {
-                            res.members.forEach((member, i) => {
-                                member.roles.remove(res);
-                            })
-                            msg.guild.members.fetch(users[0].discord_id)
-                                .then(async member => {
-                                    await member.roles.add(res)
-                                })
-
-                            return res;
-                        });
-                    await msg.guild.roles.fetch('897035794680782849')
-                        .then(res => {
-                            res.members.forEach((member, i) => {
-                                member.roles.remove(res);
-                            })
-
-                            msg.guild.members.fetch(users[1].discord_id)
-                                .then(async member => {
-                                    await member.roles.add(res)
-                                })
-
-                            return res;
-                        });
-                    await msg.guild.roles.fetch('897039738823913502')
-                        .then(res => {
-                            res.members.forEach((member, i) => {
-                                member.roles.remove(res);
-                            })
-
-                            msg.guild.members.fetch(users[2].discord_id)
-                                .then(async member => {
-                                    await member.roles.add(res)
-                                })
-                            return res;
-                        });
+                    // await msg.guild.roles.fetch('897035307940204574')
+                    //     .then(res => {
+                    //         res.members.forEach((member, i) => {
+                    //             member.roles.remove(res);
+                    //         })
+                    //         msg.guild.members.fetch(users[0].discord_id)
+                    //             .then(async member => {
+                    //                 await member.roles.add(res)
+                    //             })
+                    //
+                    //         return res;
+                    //     });
+                    // await msg.guild.roles.fetch('897035794680782849')
+                    //     .then(res => {
+                    //         res.members.forEach((member, i) => {
+                    //             member.roles.remove(res);
+                    //         })
+                    //
+                    //         msg.guild.members.fetch(users[1].discord_id)
+                    //             .then(async member => {
+                    //                 await member.roles.add(res)
+                    //             })
+                    //
+                    //         return res;
+                    //     });
+                    // await msg.guild.roles.fetch('897039738823913502')
+                    //     .then(res => {
+                    //         res.members.forEach((member, i) => {
+                    //             member.roles.remove(res);
+                    //         })
+                    //
+                    //         msg.guild.members.fetch(users[2].discord_id)
+                    //             .then(async member => {
+                    //                 await member.roles.add(res)
+                    //             })
+                    //         return res;
+                    //     });
 
                     for (let i = 0; i < users.length; i++) {
-                        let roleName = "";
-
-                        if (i === 0) {
-                            roleName = "гоняет на тесле😎";
-                        }
-                        if (i === 1) {
-                            roleName = "👅global elite👅"
-                        }
-                        if (i === 2) {
-                            roleName = "⚡ADMIRAL⚡"
-                        }
+                        let roleName = "наград нет, но вы держитесь";
 
                         if (i === 7) {
                             break;
                         }
 
                         exampleEmbed.addField(`${i + 1}.` + users[i].name, ' | ', true);
-                        if (roleName)
-                            exampleEmbed.addField(roleName, ' | ', true);
-                        else
-                            exampleEmbed.addField('________', ' | ', true);
+                        exampleEmbed.addField(roleName, ' | ', true);
                         exampleEmbed.addField(`${users[i].discord_score}`, ' | ', true);
                     }
                     await msg.channel.send({embeds: [exampleEmbed]})
@@ -546,4 +538,23 @@ function addDiscordScore(user, point) {
         }
     }).then(res => {
     })
+}
+
+function waitAndDo(times, msg) {
+    if(times < 0) {
+        return;
+    }
+
+    setTimeout(function() {
+        if (times === 1) {
+            msg.channel.send(`Удаление сервера пройзойдет через: ${times}`)
+                .then(res => {
+                    res.reply('де наебка')
+                });
+            return;
+        } else {
+            msg.channel.send(`Удаление сервера пройзойдет через: ${times}`)
+        }
+        waitAndDo(times-1,msg);
+    }, 1000);
 }
