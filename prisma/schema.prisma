@@ -51,4 +51,17 @@ model CallsUsers {
    @@map("call_user")
 }
 
+model HalyavaClicker {
+    id Int @id @default(autoincrement())
+    is_active Boolean @default(true)
+    total_clicks Int @default(0)
+}
+
+model HalyavaClickerClick {
+    userId Int
+    halyavaClickerId Int
+    clicks Int @default(0)
+    @@unique([userId, halyavaClickerId])
+}
+
 

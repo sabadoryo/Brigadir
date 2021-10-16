@@ -1,10 +1,10 @@
 require('dotenv').config()
 
 const axios = require('axios').default;
-const {Client, Intents} = require('discord.js');
+const {Client, Intents, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
+;
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
-const {MessageEmbed} = require('discord.js');
 const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -18,20 +18,99 @@ const client = new Client({
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
-//@TODO top chel rol' for top 1
+
+const buttonComponent = new MessageActionRow()
+    .addComponents(
+        new MessageButton()
+            .setCustomId('halyava')
+            .setLabel('Кликни чтобы забрать халяву')
+            .setStyle('PRIMARY'),
+    );
 
 client.on('ready', async () => {
-    console.log(client.user.tag)
+    // startHalyavaClicker()
 });
 
+
+async function startHalyavaClicker() {
+    client.channels.cache.get('897527533875134524').send({
+        content: 'Халява, забирайте',
+        components: [buttonComponent]
+    }).then(res => {
+        console.log(res)
+        setTimeout(function () {
+            prisma.halyavaClicker.findFirst({
+                where: {
+                    is_active: true
+                }
+            }).then(res => {
+                prisma.halyavaClicker.update({
+                    where:{
+                        id: res.id
+                    },
+                    data:{
+                        is_active:false
+                    }
+                })
+            })
+            res.delete();
+        }, 15000)
+    })
+    await prisma.halyavaClicker.create({
+        data: {
+            is_active: true,
+            total_clicks: 0
+        }
+    });
+}
+
+
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return;
-
-    const {commandName} = interaction;
-
-    if (commandName === 'about') {
-        await interaction.reply("Brigadir v0.0.1, https://github.com/sabadoryo/Brigadir");
-    }
+    // const filter = m => m.customId === 'halyava';
+    // const collector = interaction.message.createMessageComponentCollector({
+    //     filter,
+    //     componentType: 'BUTTON',
+    //     time: 15000
+    // });
+    //
+    // collector.on('collect', async m => {
+    //     const user = await createUserIfDoesNotExist(interaction.message.member.user)
+    //
+    //     prisma.halyavaClicker.findFirst({
+    //         where: {
+    //             is_active: true
+    //         }
+    //     }).then(async res => {
+    //         if (res) {
+    //             await prisma.halyavaClickerClick.upsert({
+    //                 where: {
+    //                     userId_halyavaClickerId: {
+    //                         userId: user.id,
+    //                         halyavaClickerId: res.id
+    //                     }
+    //                 },
+    //                 create: {
+    //                     userId: user.id,
+    //                     halyavaClickerId: res.id
+    //                 },
+    //                 update: {
+    //                     clicks: {
+    //                         increment: 1
+    //                     }
+    //                 }
+    //             })
+    //
+    //             await addDiscordScore(user, 1)
+    //         }
+    //     })
+    // })
+    //
+    // collector.on('end', collected => {
+    //
+    // })
+    // ;
+    //
+    // await interaction.deferUpdate();
 });
 
 client.on('messageCreate', async msg => {
@@ -47,7 +126,7 @@ client.on('messageCreate', async msg => {
 
             if (command === 'bunt') {
 
-                waitAndDo(15,msg)
+                waitAndDo(15, msg)
             }
 
             if (command === 'rc') {
@@ -128,7 +207,7 @@ client.on('messageCreate', async msg => {
             if (command === 'shuffle') {
                 let params = msg.content.replace('!!shuffle', '').trim().split('>');
 
-                if (params.length != 2) {
+                if (params.length !== 2) {
                     await msg.reply('Неверный синтаксис. \nВот так !!shuffle **войс в котором сидят все**>**Войс в который пнуть половину игроков**\nпример: !!shuffle main voice>second voice')
                     return;
                 }
@@ -476,7 +555,7 @@ client.on('messageCreate', async msg => {
 
 client.on('guildMemberAdd', async (member) => {
     console.log('MEMBER ADDED')
-    const channel = member.guild.channels.cache.find(channel => channel.name === "welcome");
+    const channel = member.guild.channels.cache.find(channel => channel.name === "🧑🏭-welcome");
     await channel.send({
         content: "**Добро пожаловать на завод!**\nДобавь реакцию серпа, чтобы залутать фри звание",
         files: [
@@ -505,7 +584,6 @@ client.on('messageReactionAdd', async (reaction, usr) => {
 })
 
 client.login(process.env.TOKEN);
-
 
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -541,11 +619,11 @@ function addDiscordScore(user, point) {
 }
 
 function waitAndDo(times, msg) {
-    if(times < 0) {
+    if (times < 0) {
         return;
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
         if (times === 1) {
             msg.channel.send(`Удаление сервера пройзойдет через: ${times}`)
                 .then(res => {
@@ -555,6 +633,6 @@ function waitAndDo(times, msg) {
         } else {
             msg.channel.send(`Удаление сервера пройзойдет через: ${times}`)
         }
-        waitAndDo(times-1,msg);
+        waitAndDo(times - 1, msg);
     }, 1000);
 }
