@@ -28,7 +28,7 @@ const buttonComponent = new MessageActionRow()
     );
 
 client.on('ready', async () => {
-    client.channels.cache.get('713858433589313645').send('@everyone уникальная возможность заработать халяву\n Победитель TI 10: **!!bet <lgd||spirit>**')
+    // client.channels.cache.get('713858433589313645').send('@everyone уникальная возможность заработать халяву\n Победитель TI 10: **!!bet <lgd||spirit>**')
 });
 
 
@@ -506,7 +506,7 @@ client.on('messageCreate', async msg => {
                         lostCommand = 'spirit'
                     }
 
-                    const users = await prisma.users.findMany({
+                    const users = await prisma.user.findMany({
                         where: {
                             have_bet: true,
                             bet_for: params[1]
@@ -528,7 +528,7 @@ client.on('messageCreate', async msg => {
 
                     await msg.channel.send('Поздравляем тех кто поставил на TEAM SPIRIT\n' + text)
 
-                    const lostUsers = await prisma.users.findMany({
+                    const lostUsers = await prisma.user.findMany({
                         where: {
                             have_bet: true,
                             bet_for: lostCommand
