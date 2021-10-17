@@ -544,13 +544,13 @@ client.on('messageCreate', async msg => {
                     for (let i = 0; i < lostLen; i++) {
                         await prisma.user.update({
                             where: {
-                                id: users[i].id,
+                                id: lostUsers[i].id,
                             },
                             data: {
                                 discord_score: 0
                             }
                         })
-                        text += `${i + 1}.${users[i].name} - 0\n`
+                        text += `${i + 1}.${lostUsers[i].name} - 0\n`
                     }
 
                     await msg.channel.send('Лузеры:\n' + text)
