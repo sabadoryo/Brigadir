@@ -523,7 +523,7 @@ client.on('messageCreate', async msg => {
                                 discord_score: users[i].discord_score * 2
                             }
                         })
-                        text += `${i + 1}.${users[i]}, выигрыш - ${users[i].discord_score * 2}\n`
+                        text += `${i + 1}.${users[i].name}, выигрыш - ${users[i].discord_score * 2}\n`
                     }
 
                     await msg.channel.send('Поздравляем тех кто поставил на TEAM SPIRIT\n' + text)
@@ -550,7 +550,7 @@ client.on('messageCreate', async msg => {
                                 discord_score: 0
                             }
                         })
-                        text += `${i + 1}.${users[i]} - 0\n`
+                        text += `${i + 1}.${users[i].name} - 0\n`
                     }
 
                     await msg.channel.send('Лузеры:\n' + text)
