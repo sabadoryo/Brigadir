@@ -28,7 +28,7 @@ const buttonComponent = new MessageActionRow()
     );
 
 client.on('ready', async () => {
-    // startHalyavaClicker()
+    client.channels.cache.get('897043212475187230').send('@everyone уникальная возможность заработать халяву\n Победитель TI 10: **!!bet <lgd||spirit>**')
 });
 
 
