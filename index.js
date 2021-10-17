@@ -496,6 +496,66 @@ client.on('messageCreate', async msg => {
 
                     await msg.reply(`Ставка поставлена, возможный ваш выигрыш:${user.discord_score * 2}`);
                 }
+
+                if (command === 'finishBet') {
+
+                    let lostCommand = "";
+                    if (params[1] === 'spirit') {
+                        lostCommand = 'lgd'
+                    } else {
+                        lostCommand = 'spirit'
+                    }
+
+                    const users = await prisma.users.findMany({
+                        where: {
+                            have_bet: true,
+                            bet_for: params[1]
+                        }
+                    });
+                    const len = users.length;
+                    let text = ""
+                    for (let i = 0; i < len; i++) {
+                        await prisma.user.update({
+                            where: {
+                                id: users[i].id,
+                            },
+                            data: {
+                                discord_score: users[i].discord_score * 2
+                            }
+                        })
+                        text += `${i + 1}.${users[i]}, выигрыш - ${users[i].discord_score * 2}\n`
+                    }
+
+                    await msg.channel.send('Поздравляем тех кто поставил на TEAM SPIRIT\n' + text)
+
+                    const lostUsers = await prisma.users.findMany({
+                        where: {
+                            have_bet: true,
+                            bet_for: lostCommand
+                        }
+                    });
+
+                    if (lostUsers.length === 0) {
+                        return;
+                    }
+
+                    let lostLen = lostUsers.length;
+
+                    for (let i = 0; i < lostLen; i++) {
+                        await prisma.user.update({
+                            where: {
+                                id: users[i].id,
+                            },
+                            data: {
+                                discord_score: 0
+                            }
+                        })
+                        text += `${i + 1}.${users[i]} - 0\n`
+                    }
+
+                    await msg.channel.send('Лузеры:\n' + text)
+
+                }
             }
             if (msg.content === '+') {
 
