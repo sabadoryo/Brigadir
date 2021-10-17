@@ -28,7 +28,7 @@ const buttonComponent = new MessageActionRow()
     );
 
 client.on('ready', async () => {
-    client.channels.cache.get('897043212475187230').send('@everyone уникальная возможность заработать халяву\n Победитель TI 10: **!!bet <lgd||spirit>**')
+    client.channels.cache.get('713858433589313645').send('@everyone уникальная возможность заработать халяву\n Победитель TI 10: **!!bet <lgd||spirit>**')
 });
 
 
