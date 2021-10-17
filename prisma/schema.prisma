@@ -18,6 +18,9 @@ model User {
   steam_id String @default("")
   calls CallsUsers[]
   halyavas Halyava[]
+  have_bet Boolean @default(false)
+  bet_amount Int @default(0)
+  bet_for String @default("")
 
   @@map("users")
 }
@@ -55,13 +58,6 @@ model HalyavaClicker {
     id Int @id @default(autoincrement())
     is_active Boolean @default(true)
     total_clicks Int @default(0)
-}
-
-model HalyavaClickerClick {
-    userId Int
-    halyavaClickerId Int
-    clicks Int @default(0)
-    @@unique([userId, halyavaClickerId])
 }
 
 
