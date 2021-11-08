@@ -118,7 +118,6 @@ client.on('messageCreate', async msg => {
     if (msg.author.bot) return;
 
     if (msg.guild === null) {
-        console.log(msg.author.id)
         if (msg.author.id === '401046879015534592') {
             let cnt = msg.content.toLowerCase();
             if (cnt === 'photo' || cnt === 'фотку' || cnt === 'фото' || cnt === 'фотка') {
