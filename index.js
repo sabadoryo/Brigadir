@@ -13,7 +13,8 @@ const client = new Client({
         Intents.FLAGS.GUILD_MEMBERS,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-        Intents.FLAGS.GUILD_VOICE_STATES
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.DIRECT_MESSAGES
     ],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
@@ -115,6 +116,24 @@ client.on('interactionCreate', async interaction => {
 
 client.on('messageCreate', async msg => {
     if (msg.author.bot) return;
+
+    if (msg.guild === null) {
+        console.log(msg.author.id)
+        if (msg.author.id === '401046879015534592') {
+            let cnt = msg.content.toLowerCase();
+            if (cnt === 'photo' || cnt === 'фотку' || cnt === 'фото' || cnt === 'фотка') {
+                await msg.reply('Все верно герл\n Автор: Darrem');
+                await msg.reply({
+                    content: 'Отправил я эту пикчу в новый год и как раз шел к тебе домой:)',
+                    files: ['./static/img/myphoto.jpg']
+                })
+            } else {
+                msg.reply('аахахахахах мааа ващесын \n Подсказка: photo');
+            }
+        }
+
+        return;
+    }
 
     await createUserIfDoesNotExist(msg.member.user).then(async user => {
             console.log(user);
