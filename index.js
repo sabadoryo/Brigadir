@@ -29,7 +29,7 @@ const buttonComponent = new MessageActionRow()
     );
 
 client.on('ready', async () => {
-    client.channels.cache.get('713858433589313645').send('УЛЬТРА ОБНОВЛЕНИЕ!!!!!!!!!!!!!\n, Теперь суффикс для команд просто !')
+    // client.channels.cache.get('713858433589313645').send('УЛЬТРА ОБНОВЛЕНИЕ!!!!!!!!!!!!!\n, Теперь суффикс для команд просто !')
 });
 
 
