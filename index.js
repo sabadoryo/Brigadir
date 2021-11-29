@@ -29,7 +29,7 @@ const buttonComponent = new MessageActionRow()
     );
 
 client.on('ready', async () => {
-    // client.channels.cache.get('713858433589313645').send('@everyone уникальная возможность заработать халяву\n Победитель TI 10: **!!bet <lgd||spirit>**')
+    client.channels.cache.get('713858433589313645').send('УЛЬТРА ОБНОВЛЕНИЕ!!!!!!!!!!!!!\n, Теперь суффикс для команд просто !')
 });
 
 
@@ -138,8 +138,8 @@ client.on('messageCreate', async msg => {
             console.log(user);
             await addDiscordScore(user, 1)
 
-            if (msg.content.startsWith('!!')) {
-                let params = msg.content.replace('!!', '').split(' ');
+            if (msg.content.startsWith('!')) {
+                let params = msg.content.replace('!', '').split(' ');
                 let command = params[0]
 
                 if (command === 'bunt') {
@@ -604,9 +604,9 @@ client.on('guildMemberAdd', async (member) => {
     console.log('MEMBER ADDED')
     const channel = member.guild.channels.cache.find(channel => channel.name === "🧑🏭-welcome");
     await channel.send({
-        content: "**Добро пожаловать на завод!**\nДобавь реакцию серпа, чтобы залутать фри звание",
+        content: "**Добро пожаловать на завод!**\n",
         files: [
-            './static/img/zavod.jpg'
+            './static/img/img.png'
         ]
     }).then(message => {
         message.react("⛏️")
@@ -614,20 +614,20 @@ client.on('guildMemberAdd', async (member) => {
 })
 
 client.on('messageReactionAdd', async (reaction, usr) => {
-    if (!usr.bot) {
-
-        const user = await createUserIfDoesNotExist(usr).then(res => {
-            addDiscordScore(res, 2)
-        })
-
-        if (reaction.emoji.name === '⛏️') {
-            const role = reaction.message.guild.roles.cache.find(r => r.name === 'Чел');
-            const guild = reaction.message.guild;
-            const memberWhoReacted = guild.members.cache.find(member => member.id === usr.id);
-
-            memberWhoReacted.roles.add(role);
-        }
-    }
+    // if (!usr.bot) {
+    //
+    //     const user = await createUserIfDoesNotExist(usr).then(res => {
+    //         addDiscordScore(res, 2)
+    //     })
+    //
+    //     if (reaction.emoji.name === '⛏️') {
+    //         const role = reaction.message.guild.roles.cache.find(r => r.name === 'Чел');
+    //         const guild = reaction.message.guild;
+    //         const memberWhoReacted = guild.members.cache.find(member => member.id === usr.id);
+    //
+    //         memberWhoReacted.roles.add(role);
+    //     }
+    // }
 })
 
 client.login(process.env.TOKEN);
