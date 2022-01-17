@@ -364,7 +364,6 @@ client.on('messageCreate', async msg => {
                                 exampleEmbed.addField(roleName, ' | ', true);
                             else
                                 exampleEmbed.addField('________', ' | ', true);
-                            exampleEmbed.addField(roleName, ' | ', true);
                             exampleEmbed.addField(`${users[i].discord_score}`, ' | ', true);
                         }
                         await msg.channel.send({embeds: [exampleEmbed]})
