@@ -345,11 +345,25 @@ client.on('messageCreate', async msg => {
                         for (let i = 0; i < users.length; i++) {
                             let roleName = "наград нет, но вы держитесь";
 
+                            if (i === 0) {
+                                roleName = "ИLON MASK🥵";
+                            }
+                            if (i === 1) {
+                                roleName = "разьебывает в соло"
+                            }
+                            if (i === 2) {
+                                roleName = "ЧСВ"
+                            }
+
                             if (i === 7) {
                                 break;
                             }
 
                             exampleEmbed.addField(`${i + 1}.` + users[i].name, ' | ', true);
+                            if (roleName)
+                                exampleEmbed.addField(roleName, ' | ', true);
+                            else
+                                exampleEmbed.addField('________', ' | ', true);
                             exampleEmbed.addField(roleName, ' | ', true);
                             exampleEmbed.addField(`${users[i].discord_score}`, ' | ', true);
                         }
