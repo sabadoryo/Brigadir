@@ -304,43 +304,43 @@ client.on('messageCreate', async msg => {
                             take: 10
                         })
 
-                        // await msg.guild.roles.fetch('897035307940204574')
-                        //     .then(res => {
-                        //         res.members.forEach((member, i) => {
-                        //             member.roles.remove(res);
-                        //         })
-                        //         msg.guild.members.fetch(users[0].discord_id)
-                        //             .then(async member => {
-                        //                 await member.roles.add(res)
-                        //             })
-                        //
-                        //         return res;
-                        //     });
-                        // await msg.guild.roles.fetch('897035794680782849')
-                        //     .then(res => {
-                        //         res.members.forEach((member, i) => {
-                        //             member.roles.remove(res);
-                        //         })
-                        //
-                        //         msg.guild.members.fetch(users[1].discord_id)
-                        //             .then(async member => {
-                        //                 await member.roles.add(res)
-                        //             })
-                        //
-                        //         return res;
-                        //     });
-                        // await msg.guild.roles.fetch('897039738823913502')
-                        //     .then(res => {
-                        //         res.members.forEach((member, i) => {
-                        //             member.roles.remove(res);
-                        //         })
-                        //
-                        //         msg.guild.members.fetch(users[2].discord_id)
-                        //             .then(async member => {
-                        //                 await member.roles.add(res)
-                        //             })
-                        //         return res;
-                        //     });
+                        await msg.guild.roles.fetch('932744892264890509')
+                            .then(res => {
+                                res.members.forEach((member, i) => {
+                                    member.roles.remove(res);
+                                })
+                                msg.guild.members.fetch(users[0].discord_id)
+                                    .then(async member => {
+                                        await member.roles.add(res)
+                                    })
+
+                                return res;
+                            });
+                        await msg.guild.roles.fetch('932746091051515995')
+                            .then(res => {
+                                res.members.forEach((member, i) => {
+                                    member.roles.remove(res);
+                                })
+
+                                msg.guild.members.fetch(users[1].discord_id)
+                                    .then(async member => {
+                                        await member.roles.add(res)
+                                    })
+
+                                return res;
+                            });
+                        await msg.guild.roles.fetch('932746698005037107')
+                            .then(res => {
+                                res.members.forEach((member, i) => {
+                                    member.roles.remove(res);
+                                })
+
+                                msg.guild.members.fetch(users[2].discord_id)
+                                    .then(async member => {
+                                        await member.roles.add(res)
+                                    })
+                                return res;
+                            });
 
                         for (let i = 0; i < users.length; i++) {
                             let roleName = "наград нет, но вы держитесь";
