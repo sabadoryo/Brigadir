@@ -295,7 +295,7 @@ client.on('messageCreate', async msg => {
                         const users = await prisma.user.findMany({
                             where: {
                                 discord_score: {
-                                    gt: 0
+                                    gte: 0
                                 }
                             },
                             orderBy: {
