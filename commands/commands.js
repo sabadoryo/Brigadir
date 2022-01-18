@@ -1,1 +1,1 @@
-Command.set('bunt', 'controller/Test.js');
+Command.set('bunt', 'controller/Test.js@test');
