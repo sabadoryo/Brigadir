@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('app/Command');
 
 const axios = require('axios').default;
 const {Client, Intents, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');

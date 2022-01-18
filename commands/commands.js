@@ -1,0 +1,1 @@
+Command.set('bunt', 'controller/Test.js');
