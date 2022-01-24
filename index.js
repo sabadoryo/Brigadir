@@ -223,15 +223,20 @@ client.on('messageCreate', async msg => {
                 }
 
                 if (command === 'shuffle') {
-                    let params = msg.content.replace('!!shuffle', '').trim().split('>');
+                    let params = msg.content.replace('!shuffle', '').trim().split('>');
 
                     if (params.length !== 2) {
                         await msg.reply('Неверный синтаксис. \nВот так !!shuffle **войс в котором сидят все**>**Войс в который пнуть половину игроков**\nпример: !!shuffle main voice>second voice')
                         return;
                     }
 
-                    let mainChannel = await msg.guild.channels.cache.find(c => c.name === params[0]);
-                    let secondaryChannel = await msg.guild.channels.cache.find(c => c.name === params[1]);
+
+                    console.log(params)
+                    let mainChannel = await msg.guild.channels.cache.find(c => c.id === params[0]);
+                    let secondaryChannel = await msg.guild.channels.cache.find(c => c.id === params[1]);
+
+                    console.log(mainChannel)
+                    console.log(secondaryChannel)
 
                     if (mainChannel == null || secondaryChannel == null) {
                         await msg.reply(':no_entry_sign: Не найдены данные каналы:no_entry_sign: ')
