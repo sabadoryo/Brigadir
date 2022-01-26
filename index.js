@@ -632,20 +632,20 @@ client.on('guildMemberAdd', async (member) => {
 })
 
 client.on('messageReactionAdd', async (reaction, usr) => {
-    // if (!usr.bot) {
-    //
-    //     const user = await createUserIfDoesNotExist(usr).then(res => {
-    //         addDiscordScore(res, 2)
-    //     })
-    //
-    //     if (reaction.emoji.name === '⛏️') {
-    //         const role = reaction.message.guild.roles.cache.find(r => r.name === 'Чел');
-    //         const guild = reaction.message.guild;
-    //         const memberWhoReacted = guild.members.cache.find(member => member.id === usr.id);
-    //
-    //         memberWhoReacted.roles.add(role);
-    //     }
-    // }
+    if (!usr.bot) {
+
+        const user = await createUserIfDoesNotExist(usr).then(res => {
+            addDiscordScore(res, 2)
+        })
+
+        if (reaction.emoji.name === '⛏️') {
+            const role = reaction.message.guild.roles.cache.find(r => r.name === 'Чел');
+            const guild = reaction.message.guild;
+            const memberWhoReacted = guild.members.cache.find(member => member.id === usr.id);
+
+            memberWhoReacted.roles.add(role);
+        }
+    }
 })
 
 client.login(process.env.TOKEN);
