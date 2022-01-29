@@ -150,7 +150,7 @@ client.on('messageCreate', async msg => {
                 if (command === 'archive') {
                     await msg.channel.send({content: 'Архив завода:', files: [
                         './static/img/ultradolgayakatka.jpg',
-                        './static/img/mnogo4elov.jpg',
+                        './static/img/mnogo4elov.PNG',
                         ]})
                 }
 
