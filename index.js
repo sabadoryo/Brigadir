@@ -147,6 +147,12 @@ client.on('messageCreate', async msg => {
                     waitAndDo(15, msg)
                 }
 
+                if (command === 'archive') {
+                    await msg.channel.send({content: 'Архив завода:', files: [
+                        './static/img/ultradolgayakatka.jpg'
+                        ]})
+                }
+
                 if (command === 'rc') {
                     if (params.length !== 3) {
                         await msg.reply('Неверный синтаксис. Вот так !!rc {дело} {количество работяг} ,пример: !!rc Дота 10')
