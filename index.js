@@ -539,6 +539,17 @@ client.on('messageCreate', async msg => {
 
                     await msg.reply(`Ставка поставлена, возможный ваш выигрыш:${user.discord_score * 2}`);
                 }
+
+                if (command === 'yahoo') {
+                    const voiceChannel = msg.member.voiceChannel;
+                    voiceChannel.join().then(connection =>
+                    {
+                        const dispatcher = connection.playFile('./static/audio/yahoo.mp3');
+                        dispatcher.on("end", end => {
+                            voiceChannel.leave()
+                        });
+                    }).catch(err => console.log(err))
+                }
             }
             if (msg.content === '+') {
 
