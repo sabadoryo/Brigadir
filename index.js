@@ -548,7 +548,7 @@ client.on('messageCreate', async msg => {
                         dispatcher.on("end", end => {
                             voiceChannel.leave()
                         });
-                    }).catch(err => console.log(err))
+                    }).catch(err => console.log(err));
                 }
             }
             if (msg.content === '+') {
