@@ -358,10 +358,10 @@ client.on('messageCreate', async msg => {
                             let roleName = "наград нет, но вы держитесь";
 
                             if (i === 0) {
-                                roleName = "ебарь дракона";
+                                roleName = "ноулайфер";
                             }
                             if (i === 1) {
-                                roleName = "даун"
+                                roleName = "чудик"
                             }
                             if (i === 2) {
                                 roleName = "клоун"
