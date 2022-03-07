@@ -1,3 +1,5 @@
+**DEPRECATED**
+
 Бригадир бот для дискорд сервера <a href="https://discord.gg/TS3eJ3AmET">``Завод``</a>
 
 ****
